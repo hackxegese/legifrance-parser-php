@@ -1,0 +1,16 @@
+{
+    "name": "legifrance/parser-php",
+    "description": "PHP library for parse legifrance.gouv.fr contents",
+    "license": "datalove",
+    "require": {
+        "php": ">=5.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Legifrance": "src/"
+        }
+    }
+}
