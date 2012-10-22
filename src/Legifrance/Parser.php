@@ -30,6 +30,36 @@ class Parser
         return $codes;
     }
 
+    public function getSummary($codeId)
+    {
+        $sections = array();
+
+        $codes = $this->getCodes();
+        if (isset($codes[$codeId])) {
+            $contents = $this->get("affichCode.do?cidTexte=$codeId");
+            // @FIXME <span class="TM5Code" id="LEGISCTA000006165623">Paragraphe 1 : De la garantie en cas d'éviction.</span>
+            preg_match_all(
+                '/<span class="TM(?<level>\d+)Code" id="(?<id>LEGISCTA\d+)">(?<title>[^"]+)<\\/span>/',
+                $contents,
+                $matches
+            );
+
+            if (isset($matches[0])) {
+                // @TODO Make a tree
+                for ($i = 0; $i < count($matches[0]); $i++) {
+                    $sections[$matches['id'][$i]] = array(
+                        'level' => $matches['level'][$i] - 1,
+                        'title' => htmlspecialchars_decode($matches['title'][$i], ENT_QUOTES),
+                    );
+                }
+            }
+        }
+        else {
+            throw new \DomainException("Code inconnu '$codeId'");
+        }
+        return $sections;
+    }
+
     protected function get($page)
     {
         return file_get_contents($this->getUrl($page));

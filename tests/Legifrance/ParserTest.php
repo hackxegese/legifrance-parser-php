@@ -27,4 +27,63 @@ EOD;
 
         $this->assertSame($expected, $parser->getCodes());
     }
+
+    public function testGetSummary()
+    {
+        $affichCode = <<<EOD
+<div id="titreTexte">
+            Code civil
+
+
+            <br/>
+<span class="sousTitreTexte">
+            Version consolidée au 2 juin 2012</span>
+        </div>
+
+
+        <div>
+   <ul class="noType">
+      <li class="noType">
+         <span class="TM1Code" id="LEGISCTA000006089696">Titre préliminaire : De la publication, des effets et de l'application des lois en général</span>
+         <span class="codeLienArt"> (<a href="affichCode.do;jsessionid=FD767F8BA043F5CEDD44BA5C6DF64494.tpdjo02v_2?idSectionTA=LEGISCTA000006089696&amp;cidTexte=LEGITEXT000006070721&amp;dateTexte=20121023">Articles 1 à 6</a>)</span>
+      </li>
+   </ul>
+</div>
+<div>
+   <ul class="noType">
+      <li class="noType">
+         <span class="TM1Code" id="LEGISCTA000006089697">Livre Ier : Des personnes</span>
+      </li>
+   </ul>
+</div>
+EOD;
+        $expected = array(
+            'LEGISCTA000006089696' => array(
+                'level' => 0,
+                'title' => "Titre préliminaire : De la publication, des effets et de l'application des lois en général",
+            ),
+            'LEGISCTA000006089697' => array(
+                'level' => 0,
+                'title' => 'Livre Ier : Des personnes',
+            ),
+        );
+
+        $parser = $this->getMock('Legifrance\Parser', array('get'));
+        $parser->expects($this->once())
+            ->method('get')
+            ->with('affichCode.do?cidTexte=LEGITEXT000006070721')
+            ->will($this->returnValue($affichCode));
+
+        $this->assertSame($expected, $parser->getSummary('LEGITEXT000006070721'));
+    }
+
+    /**
+     * @expectedException \DomainException
+     * @expectedExceptionMessage Code inconnu '_invalid_'
+     */
+    public function testGetInvalidSummary()
+    {
+        $parser = new \Legifrance\Parser();
+        $parser->getSummary('_invalid_');
+    }
 }
