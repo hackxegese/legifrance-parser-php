@@ -60,6 +60,31 @@ class Parser
         return $sections;
     }
 
+    public function getSection($codeId, $sectionId)
+    {
+        $articles = array();
+
+        $codes = $this->getCodes();
+        if (isset($codes[$codeId])) {
+            $contents = $this->get("affichCode.do?idSectionTA=$sectionId&cidTexte=$codeId");
+            preg_match_all(
+                '/<div class="titreArt">(?<title>.+) <a href=".*idArticle=(?<id>LEGIARTI\d+)/',
+                $contents,
+                $matches
+            );
+
+            if (isset($matches[0])) {
+                for ($i = 0; $i < count($matches[0]); $i++) {
+                    $articles[$matches['id'][$i]] = htmlspecialchars_decode($matches['title'][$i], ENT_QUOTES);
+                }
+            }
+        }
+        else {
+            throw new \DomainException("Code inconnu '$codeId'");
+        }
+        return $articles;
+    }
+
     protected function get($page)
     {
         return file_get_contents($this->getUrl($page));
