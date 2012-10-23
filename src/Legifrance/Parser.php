@@ -85,6 +85,56 @@ class Parser
         return $articles;
     }
 
+    public function getArticle($codeId, $sectionId, $articleId)
+    {
+        $article = array();
+
+        $contents = $this->get("affichCodeArticle.do?idArticle=$articleId&idSectionTA=$sectionId&cidTexte=$codeId");
+
+        preg_match(
+            '/<div class="titreArt">(?<title>.+)<\/div>/',
+            $contents,
+            $matches
+        );
+        if (isset($matches['title'])) {
+            $article['title'] = $matches['title'];
+        }
+
+        preg_match(
+            '/<li>Créé par <span class=".*">(?P<create>.*)<\/span>/',
+            $contents,
+            $matches
+        );
+        if (isset($matches['create'])) {
+            $article['created-by'] = $matches['create'];
+        }
+
+        preg_match_all(
+            '/<li>Modifié par <.*?>(?P<modify>.*?)<\//ms',
+            $contents,
+            $matches
+        );
+        if (isset($matches[0])) {
+            for ($i = 0; $i < count($matches[0]); $i++) {
+                $article['modified-by'][] = $matches['modify'][$i];
+            }
+        }
+
+        preg_match(
+            '/<div class="corpsArt">(?<content>.*?)<\/div>/ms',
+            $contents,
+            $matches
+        );
+        if (isset($matches['content'])) {
+            $markdownify = new \Markdownify(false, false);
+            $article['content'] = htmlspecialchars_decode(
+                $markdownify->parseString($matches['content']),
+                ENT_QUOTES
+            );
+        }
+        return $article;
+    }
+
     protected function get($page)
     {
         return file_get_contents($this->getUrl($page));
