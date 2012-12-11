@@ -13,7 +13,7 @@ class Parser
             $codes = array();
             $contents = $this->get('initRechCodeArticle.do');
             preg_match_all(
-                '/<option value="(?<id>LEGITEXT\d+)" title="(?<title>[^"]+)"/',
+                '#<option value="(?<id>LEGITEXT\d+)" title="(?<title>[^"]+)"#',
                 $contents,
                 $matches
             );
@@ -39,7 +39,7 @@ class Parser
             $contents = $this->get("affichCode.do?cidTexte=$codeId");
             // @FIXME <span class="TM5Code" id="LEGISCTA000006165623">Paragraphe 1 : De la garantie en cas d'éviction.</span>
             preg_match_all(
-                '/<span class="TM(?<level>\d+)Code" id="(?<id>LEGISCTA\d+)">(?<title>[^"]+)<\\/span>/',
+                '#<span class="TM(?<level>\d+)Code" id="(?<id>LEGISCTA\d+)">(?<title>[^"]+)</span>#',
                 $contents,
                 $matches
             );
@@ -68,7 +68,7 @@ class Parser
         if (isset($codes[$codeId])) {
             $contents = $this->get("affichCode.do?idSectionTA=$sectionId&cidTexte=$codeId");
             preg_match_all(
-                '/<div class="titreArt">(?<title>.+) <a href=".*idArticle=(?<id>LEGIARTI\d+)/',
+                '#<div class="titreArt">(?<title>.+) <a href=".*idArticle=(?<id>LEGIARTI\d+)#',
                 $contents,
                 $matches
             );
@@ -92,7 +92,7 @@ class Parser
         $contents = $this->get("affichCodeArticle.do?idArticle=$articleId&idSectionTA=$sectionId&cidTexte=$codeId");
 
         preg_match(
-            '/<div class="titreArt">(?<title>.+)<\/div>/',
+            '#<div class="titreArt">(?<title>.+)</div>#',
             $contents,
             $matches
         );
@@ -101,7 +101,7 @@ class Parser
         }
 
         preg_match(
-            '/<li>Créé par <span class=".*">(?P<create>.*)<\/span>/',
+            '#<li>Créé par <span class=".*">(?P<create>.*)</span>#',
             $contents,
             $matches
         );
@@ -110,7 +110,7 @@ class Parser
         }
 
         preg_match_all(
-            '/<li>Modifié par <.*?>(?P<modify>.*?)<\//ms',
+            '#<li>Modifié par <.*?>(?P<modify>.*?)</#ms',
             $contents,
             $matches
         );
@@ -121,7 +121,7 @@ class Parser
         }
 
         preg_match(
-            '/<div class="corpsArt">(?<content>.*?)<\/div>/ms',
+            '#<div class="corpsArt">(?<content>.*?)</div>#ms',
             $contents,
             $matches
         );
