@@ -25,6 +25,7 @@ EOD;
             ->with('initRechCodeArticle.do')
             ->will($this->returnValue($initRechCodeArticle));
 
+        $parser->setDate('20121221');
         $this->assertSame($expected, $parser->getCodes());
     }
 

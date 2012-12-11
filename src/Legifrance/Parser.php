@@ -4,6 +4,12 @@ namespace Legifrance;
 
 class Parser
 {
+    private $date = null;
+
+    public function setDate($date)
+    {
+        $this->date = $date;
+    }
 
     public function getCodes()
     {
@@ -142,7 +148,13 @@ class Parser
 
     private function getUrl($page)
     {
-        $baseUrl = 'http://www.legifrance.gouv.fr';
-        return "$baseUrl/$page";
+        $url = "http://www.legifrance.gouv.fr/$page";
+        if(strpos($url, '?') === false) {
+            $url .= '?';
+        }
+        if(!is_null($this->date)) {
+            $url .= "&dateTexte={$this->date}";
+        }
+        return $url;
     }
 }
