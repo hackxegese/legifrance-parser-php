@@ -29,6 +29,39 @@ EOD;
         $this->assertSame($expected, $parser->getCodes());
     }
 
+    public function testGetCodeTitle()
+    {
+        $initRechCodeArticle = <<<EOD
+<span class="selectCode">
+    <select name="cidTexte" id="champ1" class="textarea"><option value="*" class="optionImpaire">-- Choisir un code --</option>
+        <option value="LEGITEXT000006074069" title="Code de l&#39;action sociale et des familles" class="optionPaire">Code de l&#39;action sociale et des familles</option>
+        <option value="LEGITEXT000006075116" title="Code de l&#39;artisanat" class="optionImpaire">Code de l&#39;artisanat</option>
+        <option value="LEGITEXT000006070721" title="Code civil" class="optionImpaire">Code civil</option>
+    </select>
+</span>
+EOD;
+        $parser = $this->getMock('Legifrance\Parser', array('get'));
+        $parser->expects($this->any())
+            ->method('get')
+            ->with('initRechCodeArticle.do')
+            ->will($this->returnValue($initRechCodeArticle));
+
+        $this->assertSame('Code civil', $parser->getCodeTitle('LEGITEXT000006070721'));
+    }
+
+    /**
+     * @expectedException \DomainException
+     * @expectedExceptionMessage Code inconnu '_invalid_'
+     */
+    public function testGetInvalidCodeTitle()
+    {
+        $parser = $this->getMock('Legifrance\Parser', array('get'));
+        $parser->expects($this->any())
+            ->method('get')
+            ->with('initRechCodeArticle.do');
+        $parser->getCodeTitle('_invalid_');
+    }
+
     public function testGetSummary()
     {
         $affichCode = <<<EOD

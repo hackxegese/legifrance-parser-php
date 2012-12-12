@@ -36,6 +36,17 @@ class Parser
         return $codes;
     }
 
+    public function getCodeTitle($codeId)
+    {
+        $codes = $this->getCodes();
+        if (isset($codes[$codeId])) {
+            return $codes[$codeId];
+        }
+        else {
+            throw new \DomainException("Code inconnu '$codeId'");
+        }
+    }
+
     public function getSummary($codeId)
     {
         $sections = array();
