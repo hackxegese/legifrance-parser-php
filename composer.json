@@ -6,7 +6,7 @@
         "php": ">=5.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "atoum/atoum": "*@dev"
     },
     "autoload": {
         "psr-0": {

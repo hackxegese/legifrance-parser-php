@@ -1,10 +1,23 @@
 <?php
 
-class ParserTest extends PHPUnit_Framework_TestCase
+namespace Test\Unit\Legifrance;
+
+use \atoum;
+
+class Parser extends atoum
 {
-    public function testGetCodes()
+    private $parser;
+
+    public function beforeTestMethod()
     {
-        $initRechCodeArticle = <<<EOD
+        $this->parser = new \mock\Legifrance\Parser();
+        $this->parser->setDate('20121221');
+        $this->parser->getMockController()->get = function($page) {
+            $result = null;
+
+            switch ($page) {
+                case 'initRechCodeArticle.do':
+                   $result = <<<EOD
 <span class="selectCode">
     <select name="cidTexte" id="champ1" class="textarea"><option value="*" class="optionImpaire">-- Choisir un code --</option>
         <option value="LEGITEXT000006074069" title="Code de l&#39;action sociale et des familles" class="optionPaire">Code de l&#39;action sociale et des familles</option>
@@ -13,25 +26,9 @@ class ParserTest extends PHPUnit_Framework_TestCase
     </select>
 </span>
 EOD;
-        $expected = array(
-            'LEGITEXT000006074069' => "Code de l'action sociale et des familles",
-            'LEGITEXT000006075116' => "Code de l'artisanat",
-            'LEGITEXT000006070721' => "Code civil",
-        );
-
-        $parser = $this->getMock('Legifrance\Parser', array('get'));
-        $parser->expects($this->once())
-            ->method('get')
-            ->with('initRechCodeArticle.do')
-            ->will($this->returnValue($initRechCodeArticle));
-
-        $parser->setDate('20121221');
-        $this->assertSame($expected, $parser->getCodes());
-    }
-
-    public function testGetCodeTitle()
-    {
-        $initRechCodeArticle = <<<EOD
+                break;
+                case 'initRechCodeArticle.do':
+                    $result = <<<EOD
 <span class="selectCode">
     <select name="cidTexte" id="champ1" class="textarea"><option value="*" class="optionImpaire">-- Choisir un code --</option>
         <option value="LEGITEXT000006074069" title="Code de l&#39;action sociale et des familles" class="optionPaire">Code de l&#39;action sociale et des familles</option>
@@ -40,31 +37,9 @@ EOD;
     </select>
 </span>
 EOD;
-        $parser = $this->getMock('Legifrance\Parser', array('get'));
-        $parser->expects($this->any())
-            ->method('get')
-            ->with('initRechCodeArticle.do')
-            ->will($this->returnValue($initRechCodeArticle));
-
-        $this->assertSame('Code civil', $parser->getCodeTitle('LEGITEXT000006070721'));
-    }
-
-    /**
-     * @expectedException \DomainException
-     * @expectedExceptionMessage Code inconnu '_invalid_'
-     */
-    public function testGetInvalidCodeTitle()
-    {
-        $parser = $this->getMock('Legifrance\Parser', array('get'));
-        $parser->expects($this->any())
-            ->method('get')
-            ->with('initRechCodeArticle.do');
-        $parser->getCodeTitle('_invalid_');
-    }
-
-    public function testGetSummary()
-    {
-        $affichCode = <<<EOD
+                break;
+                case 'affichCode.do?cidTexte=LEGITEXT000006070721':
+                    $result = <<<EOD
 <div id="titreTexte">
             Code civil
 
@@ -91,39 +66,9 @@ EOD;
    </ul>
 </div>
 EOD;
-        $expected = array(
-            'LEGISCTA000006089696' => array(
-                'level' => 0,
-                'title' => "Titre préliminaire : De la publication, des effets et de l'application des lois en général",
-            ),
-            'LEGISCTA000006089697' => array(
-                'level' => 0,
-                'title' => 'Livre Ier : Des personnes',
-            ),
-        );
-
-        $parser = $this->getMock('Legifrance\Parser', array('get'));
-        $parser->expects($this->once())
-            ->method('get')
-            ->with('affichCode.do?cidTexte=LEGITEXT000006070721')
-            ->will($this->returnValue($affichCode));
-
-        $this->assertSame($expected, $parser->getSummary('LEGITEXT000006070721'));
-    }
-
-    /**
-     * @expectedException \DomainException
-     * @expectedExceptionMessage Code inconnu '_invalid_'
-     */
-    public function testGetInvalidSummary()
-    {
-        $parser = new \Legifrance\Parser();
-        $parser->getSummary('_invalid_');
-    }
-
-    public function testGetSection()
-    {
-        $affichCode = <<<EOD
+                break;
+                case 'affichCode.do?idSectionTA=LEGITEXT000006070721&cidTexte=LEGITEXT000006070721':
+                    $result = <<<EOD
 <div class="titreSection">Chapitre IV : De l'utilisation des techniques d'imagerie cérébrale</div>
 <a id="LEGIARTI000024324450"> </a>
 <div class="article">
@@ -137,35 +82,9 @@ EOD;
    <div class="corpsArt">Les techniques d'imagerie cérébrale ne peuvent être employées qu'à des fins médicales ou de recherche scientifique, ou dans le cadre d'expertises judiciaires. Le consentement exprès de la personne doit être recueilli par écrit préalablement à la réalisation de l'examen, après qu'elle a été dûment informée de sa nature et de sa finalité. Le consentement mentionne la finalité de l'examen. Il est révocable sans forme et à tout moment.</div>
 </div>
 EOD;
-        $expected = array(
-            'LEGIARTI000024324450' => 'Article 16-14',
-        );
-
-        $codeId = 'LEGITEXT000006070721';
-        $sectionId = 'LEGITEXT000006070721';
-        $parser = $this->getMock('Legifrance\Parser', array('get'));
-        $parser->expects($this->atLeastOnce())
-            ->method('get')
-            ->with("affichCode.do?idSectionTA=$sectionId&cidTexte=$codeId")
-            ->will($this->returnValue($affichCode));
-
-        $this->assertSame($expected, $parser->getSection($sectionId, $codeId));
-    }
-
-    /**
-     * @expectedException \DomainException
-     * @expectedExceptionMessage Code inconnu '_invalid_'
-     */
-    public function testGetInvalidSection()
-    {
-        $parser = new \Legifrance\Parser();
-        $parser->getSection('_invalid_', '_invalid_');
-    }
-
-    public function testGetArticle()
-    {
-
-        $affichCodeArticle = <<<EOD
+                break;
+                case 'affichCodeArticle.do?idArticle=LEGIARTI000006419289&idSectionTA=LEGITEXT000006070721&cidTexte=LEGITEXT000006070721':
+                    $result = <<<EOD
 <div>
 
 
@@ -200,6 +119,94 @@ EOD;
 </div>
 </div>
 EOD;
+            }
+            return $result;
+        };
+    }
+
+    public function testCreation()
+    {
+        $this->object($this->parser)
+            ->isInstanceOf('\Legifrance\Parser');
+    }
+
+    public function testGetCodes()
+    {
+        $expected = array(
+            'LEGITEXT000006074069' => "Code de l'action sociale et des familles",
+            'LEGITEXT000006075116' => "Code de l'artisanat",
+            'LEGITEXT000006070721' => "Code civil",
+        );
+
+        $this->array($this->parser->getCodes())
+            ->isIdenticalTo($expected);
+    }
+
+    public function testGetCodeTitle()
+    {
+        $this->string($this->parser->getCodeTitle('LEGITEXT000006070721'))
+            ->isIdenticalTo('Code civil');
+    }
+
+    public function testGetInvalidCodeTitle()
+    {
+        $this
+            ->exception(function() {
+                $this->parser->getCodeTitle('_invalid_');
+            })
+            ->hasMessage("Code inconnu '_invalid_'")
+            ->isInstanceOf('\DomainException');
+    }
+
+    public function testGetSummary()
+    {
+        $expected = array(
+            'LEGISCTA000006089696' => array(
+                'level' => 0,
+                'title' => "Titre préliminaire : De la publication, des effets et de l'application des lois en général",
+            ),
+            'LEGISCTA000006089697' => array(
+                'level' => 0,
+                'title' => 'Livre Ier : Des personnes',
+            ),
+        );
+
+        $this->array($this->parser->getSummary('LEGITEXT000006070721'))
+            ->isIdenticalTo($expected);
+    }
+
+    public function testGetInvalidSummary()
+    {
+        $this
+            ->exception(function() {
+                $this->parser->getSummary('_invalid_');
+            })
+            ->hasMessage("Code inconnu '_invalid_'")
+            ->isInstanceOf('\DomainException');
+    }
+
+    public function testGetSection()
+    {
+        $expected = array(
+            'LEGIARTI000024324450' => 'Article 16-14',
+        );
+
+        $this->array($this->parser->getSection('LEGITEXT000006070721', 'LEGITEXT000006070721'))
+            ->isIdenticalTo($expected);
+    }
+
+    public function testGetInvalidSection()
+    {
+        $this
+            ->exception(function() {
+                $this->parser->getSection('_invalid_', '_invalid_');
+            })
+            ->hasMessage("Code inconnu '_invalid_'")
+            ->isInstanceOf('\DomainException');
+    }
+
+    public function testGetArticle()
+    {
         $expected = array(
             'title' => 'Article 10',
             'created-by' => 'Loi 1803-03-08 promulguée le 18 mars 1803',
@@ -211,15 +218,7 @@ EOD;
             'content' => "Chacun est tenu d'apporter son concours à la justice en vue de la manifestation de la vérité.\nCelui qui, sans motif légitime, se soustrait à cette obligation lorsqu'il en a été légalement requis, peut être contraint d'y satisfaire, au besoin à peine d'astreinte ou d'amende civile, sans préjudice de dommages et intérêts.",
         );
 
-        $codeId = 'LEGITEXT000006070721';
-        $sectionId = 'LEGITEXT000006070721';
-        $articleId = 'LEGIARTI000006419289';
-        $parser = $this->getMock('Legifrance\Parser', array('get'));
-        $parser->expects($this->atLeastOnce())
-            ->method('get')
-            ->with("affichCodeArticle.do?idArticle=$articleId&idSectionTA=$sectionId&cidTexte=$codeId")
-            ->will($this->returnValue($affichCodeArticle));
-
-        $this->assertSame($expected, $parser->getArticle($sectionId, $codeId, $articleId));
+        $this->array($this->parser->getArticle('LEGITEXT000006070721', 'LEGITEXT000006070721', 'LEGIARTI000006419289'))
+            ->isIdenticalTo($expected);
     }
 }
