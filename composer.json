@@ -13,5 +13,8 @@
             "Legifrance": "src/"
         },
         "classmap": ["src/Markdownify/"]
+    },
+    "config": {
+        "bin-dir": "bin"
     }
 }
