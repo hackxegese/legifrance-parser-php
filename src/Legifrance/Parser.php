@@ -4,11 +4,11 @@ namespace Legifrance;
 
 class Parser
 {
-    private $date = null;
+    private $stream = null;
 
-    public function setDate($date)
+    public function __construct(Stream $stream)
     {
-        $this->date = $date;
+        $this->stream = $stream;
     }
 
     public function getCodes()
@@ -152,20 +152,8 @@ class Parser
         return $article;
     }
 
-    protected function get($page)
+    private function get($page)
     {
-        return file_get_contents($this->getUrl($page));
-    }
-
-    private function getUrl($page)
-    {
-        $url = "http://www.legifrance.gouv.fr/$page";
-        if(strpos($url, '?') === false) {
-            $url .= '?';
-        }
-        if(!is_null($this->date)) {
-            $url .= "&dateTexte={$this->date}";
-        }
-        return $url;
+        return $this->stream->get($page);
     }
 }

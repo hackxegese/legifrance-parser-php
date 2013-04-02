@@ -10,9 +10,9 @@ class Parser extends atoum
 
     public function beforeTestMethod()
     {
-        $this->parser = new \mock\Legifrance\Parser();
-        $this->parser->setDate('20121221');
-        $this->parser->getMockController()->get = function($page) {
+        $stream = new \mock\Legifrance\Stream();
+        $stream->setDate('20121221');
+        $stream->getMockController()->get = function($page) {
             $result = null;
 
             switch ($page) {
@@ -122,6 +122,8 @@ EOD;
             }
             return $result;
         };
+
+        $this->parser = new \mock\Legifrance\Parser($stream);
     }
 
     public function testCreation()
