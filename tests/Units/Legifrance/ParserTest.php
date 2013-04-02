@@ -8,7 +8,7 @@ class Parser extends atoum
 {
     private $parser;
 
-    public function beforeTestMethod()
+    public function beforeTestMethod($testMethod)
     {
         $stream = new \mock\Legifrance\Stream();
         $stream->setDate('20121221');

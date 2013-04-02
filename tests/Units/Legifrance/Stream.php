@@ -6,7 +6,7 @@ class Stream extends \atoum
 {
     private $stream;
 
-    public function beforeTestMethod()
+    public function beforeTestMethod($testMethod)
     {
         $this->stream = new \Legifrance\Stream();
     }
