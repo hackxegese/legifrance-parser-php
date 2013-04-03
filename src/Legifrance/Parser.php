@@ -152,6 +152,11 @@ class Parser
         return $article;
     }
 
+    public function setDate($date)
+    {
+        $this->stream->date = $date;
+    }
+
     private function get($page)
     {
         return $this->stream->get($page);

@@ -4,12 +4,7 @@ namespace Legifrance;
 
 class Stream
 {
-    private $date = null;
-
-    public function setDate($date)
-    {
-        $this->date = $date;
-    }
+    public $date = null;
 
     public function get($page)
     {

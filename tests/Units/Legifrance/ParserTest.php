@@ -6,13 +6,14 @@ use \atoum;
 
 class Parser extends atoum
 {
+    private $stream;
     private $parser;
 
     public function beforeTestMethod($testMethod)
     {
-        $stream = new \mock\Legifrance\Stream();
-        $stream->setDate('20121221');
-        $stream->getMockController()->get = function($page) {
+        $this->stream = new \mock\Legifrance\Stream();
+        $this->stream->date = '20121221';
+        $this->stream->getMockController()->get = function($page) {
             $result = null;
 
             switch ($page) {
@@ -123,12 +124,13 @@ EOD;
             return $result;
         };
 
-        $this->parser = new \mock\Legifrance\Parser($stream);
+        $this->parser = new \Legifrance\Parser($this->stream);
     }
 
     public function testCreation()
     {
-        $this->object($this->parser)
+        $stream = new \Legifrance\Stream();
+        $this->object(new \Legifrance\Parser($stream))
             ->isInstanceOf('\Legifrance\Parser');
     }
 
@@ -222,5 +224,12 @@ EOD;
 
         $this->array($this->parser->getArticle('LEGITEXT000006070721', 'LEGITEXT000006070721', 'LEGIARTI000006419289'))
             ->isIdenticalTo($expected);
+    }
+
+    public function testSetDate()
+    {
+        $this->parser->setDate('20130101');
+        $this->string($this->stream->date)
+            ->isIdenticalTo('20130101');
     }
 }

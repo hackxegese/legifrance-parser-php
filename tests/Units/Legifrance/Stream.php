@@ -16,4 +16,11 @@ class Stream extends \atoum
         $this->string($this->stream->get('/'))
             ->isNotNull();
     }
+
+    public function testSetDate()
+    {
+        $this->stream->date = '20121201';
+        $this->string($this->stream->get('/'))
+            ->isNotNull();
+    }
 }
