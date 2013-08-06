@@ -1,3 +1,3 @@
 # Legifrance parser
 
-[![Build Status](https://travis-ci.org/sanpii/legifrance-parser-php.png)](https://travis-ci.org/sanpii/legifrance-parser-php)
+[![Build Status](https://ci.homecomputing.fr/Legifrance-parser-php/build/status)](https://ci.homecomputing.fr/Legifrance-parser-php)
