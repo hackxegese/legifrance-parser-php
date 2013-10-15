@@ -143,7 +143,7 @@ class Parser
             $matches
         );
         if (isset($matches['content'])) {
-            $markdownify = new \Markdownify(false, false);
+            $markdownify = new \Markdownify\ConverterExtra(false, false);
             $article['content'] = htmlspecialchars_decode(
                 $markdownify->parseString($matches['content']),
                 ENT_QUOTES

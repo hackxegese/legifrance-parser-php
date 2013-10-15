@@ -4,6 +4,7 @@
     "license": "datalove",
     "require": {
         "php": ">=5.3",
+        "pixel418/markdownify": "*",
         "guzzle/guzzle": "*"
     },
     "require-dev": {
@@ -13,8 +14,7 @@
         "psr-0": {
             "Legifrance": "src/",
             "Test": "tests/"
-        },
-        "classmap": ["src/Markdownify/"]
+        }
     },
     "config": {
         "bin-dir": "bin"
