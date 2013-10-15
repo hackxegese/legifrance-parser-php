@@ -105,7 +105,11 @@ class Parser extends Test
                 'Loi n°72-626 du 5 juillet 1972 - art. 12 JORF 9 juillet 1972 en vigueur le 16 septembre 1972',
                 'Loi n°94-653 du 29 juillet 1994 - art. 1 JORF 30 juillet 1994',
             ),
-            'content' => "Chacun est tenu d'apporter son concours à la justice en vue de la manifestation de la vérité.\nCelui qui, sans motif légitime, se soustrait à cette obligation lorsqu'il en a été légalement requis, peut être contraint d'y satisfaire, au besoin à peine d'astreinte ou d'amende civile, sans préjudice de dommages et intérêts.",
+            'content' => <<<EOD
+Chacun est tenu d'apporter son concours à la justice en vue de la manifestation de la vérité.
+Celui qui, sans motif légitime, se soustrait à cette obligation lorsqu'il en a été légalement requis, peut être contraint d'y satisfaire, au besoin à peine d'astreinte ou d'amende civile, sans préjudice de dommages et intérêts.
+Les deux premiers alinéas de [l'article 132-23](../LEGITEXT000006070719/LEGIARTI000006417401.md) relatif à la période de sûreté sont applicables à l'infraction prévue par le présent article.
+EOD
         );
 
         $this->array($this->parser->getArticle('LEGITEXT000006070721', 'LEGITEXT000006070721', 'LEGIARTI000006419289'))

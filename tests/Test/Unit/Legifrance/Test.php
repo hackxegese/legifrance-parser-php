@@ -104,6 +104,7 @@ EOD;
 <div class="corpsArt">
    <p/>   Chacun est tenu d'apporter son concours à la justice en vue de la manifestation de la vérité.<p/>
    <p/>   Celui qui, sans motif légitime, se soustrait à cette obligation lorsqu'il en a été légalement requis, peut être contraint d'y satisfaire, au besoin à peine d'astreinte ou d'amende civile, sans préjudice de dommages et intérêts.<p/>
+   <p/>   Les deux premiers alinéas de <a href="affichCodeArticle.do;jsessionid=12C829864A7F050E908E0CFA7168E770.tpdjo03v_2?cidTexte=LEGITEXT000006070719&idArticle=LEGIARTI000006417401&dateTexte=&categorieLien=cid"style="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;color: #336699;&#xA;&#x9;&#x9;&#x9;&#x9;">l'article 132-23</a> relatif à la période de sûreté sont applicables à l'infraction prévue par le présent article.<p/>
 </div>
 <br/>
 <h3>Liens relatifs à cet article</h3>

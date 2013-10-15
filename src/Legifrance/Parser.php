@@ -148,6 +148,12 @@ class Parser
                 $markdownify->parseString($matches['content']),
                 ENT_QUOTES
             );
+
+            $article['content'] = preg_replace(
+                '#<a href=".*?cidTexte=([^&]*?)&.*idArticle=([^&]*?)&.*".*?>(.*)</a>#ms',
+                '[$3](../$1/$2.md)',
+                $article['content']
+            );
         }
         return $article;
     }
