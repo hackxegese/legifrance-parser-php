@@ -2,9 +2,7 @@
 
 namespace Test\Unit\Legifrance;
 
-use \atoum;
-
-class Parser extends atoum
+class Parser extends \atoum
 {
     private $stream;
     private $parser;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Units\Legifrance;
+namespace Test\Unit\Legifrance;
 
 class Stream extends \atoum
 {
