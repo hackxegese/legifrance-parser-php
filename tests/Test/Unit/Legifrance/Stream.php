@@ -2,25 +2,18 @@
 
 namespace Test\Unit\Legifrance;
 
-class Stream extends \atoum
+class Stream extends Test
 {
-    private $stream;
-
-    public function beforeTestMethod($testMethod)
-    {
-        $this->stream = new \Legifrance\Stream();
-    }
-
     public function testGet()
     {
-        $this->string($this->stream->get('/'))
+        $this->string($this->stream->get('initRechCodeArticle.do'))
             ->isNotNull();
     }
 
     public function testSetDate()
     {
         $this->stream->date = '20121201';
-        $this->string($this->stream->get('/'))
+        $this->string($this->stream->get('initRechCodeArticle.do'))
             ->isNotNull();
     }
 }

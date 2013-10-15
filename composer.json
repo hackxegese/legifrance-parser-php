@@ -3,7 +3,8 @@
     "description": "PHP library for parse legifrance.gouv.fr contents",
     "license": "datalove",
     "require": {
-        "php": ">=5.3"
+        "php": ">=5.3",
+        "guzzle/guzzle": "*"
     },
     "require-dev": {
         "atoum/atoum": "*@dev"

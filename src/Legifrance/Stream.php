@@ -6,20 +6,23 @@ class Stream
 {
     public $date = null;
 
-    public function get($page)
+    public function __construct()
     {
-        return file_get_contents($this->getUrl($page));
+        $this->client = new \Guzzle\Http\Client('http://www.legifrance.gouv.fr');
     }
 
-    private function getUrl($page)
+    public function get($page)
     {
-        $url = "http://www.legifrance.gouv.fr/$page";
-        if(strpos($url, '?') === false) {
-            $url .= '?';
+        if(strpos($page, '?') === false) {
+            $page .= '?';
         }
         if(!is_null($this->date)) {
-            $url .= "&dateTexte={$this->date}";
+            $page .= "&dateTexte={$this->date}";
         }
-        return $url;
+
+        $request = $this->client->get($page);
+        $response = $request->send();
+
+        return (string)$response;
     }
 }
