@@ -4,11 +4,11 @@
     "license": "datalove",
     "require": {
         "php": ">=5.3",
-        "pixel418/markdownify": "*",
-        "guzzle/guzzle": "*"
+        "pixel418/markdownify": "~2.1",
+        "guzzle/guzzle": "~3.8"
     },
     "require-dev": {
-        "atoum/atoum": "*@dev"
+        "atoum/atoum": "~0.0.1@dev"
     },
     "autoload": {
         "psr-0": {
