@@ -1,7 +1,7 @@
 {
     "name": "legifrance/parser-php",
     "description": "PHP library for parse legifrance.gouv.fr contents",
-    "license": "datalove",
+    "license": "MIT",
     "require": {
         "php": ">=5.3",
         "pixel418/markdownify": "~2.1",
