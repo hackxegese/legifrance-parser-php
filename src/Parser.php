@@ -16,7 +16,7 @@ class Parser
         static $codes = null;
 
         if (is_null($codes)) {
-            $codes = array();
+            $codes = [];
             $contents = $this->get('initRechCodeArticle.do');
             preg_match_all(
                 '#<option value="(?<id>LEGITEXT\d+)" title="(?<title>[^"]+)"#',
@@ -49,7 +49,7 @@ class Parser
 
     public function getSummary($codeId)
     {
-        $sections = array();
+        $sections = [];
 
         $codes = $this->getCodes();
         if (isset($codes[$codeId])) {
@@ -64,10 +64,10 @@ class Parser
             if (isset($matches[0])) {
                 // @TODO Make a tree
                 for ($i = 0; $i < count($matches[0]); $i++) {
-                    $sections[$matches['id'][$i]] = array(
+                    $sections[$matches['id'][$i]] = [
                         'level' => $matches['level'][$i] - 1,
                         'title' => htmlspecialchars_decode($matches['title'][$i], ENT_QUOTES),
-                    );
+                    ];
                 }
             }
         }
@@ -79,7 +79,7 @@ class Parser
 
     public function getSection($codeId, $sectionId)
     {
-        $articles = array();
+        $articles = [];
 
         $codes = $this->getCodes();
         if (isset($codes[$codeId])) {
@@ -104,7 +104,7 @@ class Parser
 
     public function getArticle($codeId, $sectionId, $articleId)
     {
-        $article = array();
+        $article = [];
 
         $contents = $this->get("affichCodeArticle.do?idArticle=$articleId&idSectionTA=$sectionId&cidTexte=$codeId");
 

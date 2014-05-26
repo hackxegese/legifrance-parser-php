@@ -3,7 +3,7 @@
     "description": "PHP library for parse legifrance.gouv.fr contents",
     "license": "MIT",
     "require": {
-        "php": ">=5.3",
+        "php": ">=5.4",
         "pixel418/markdownify": "~2.1",
         "guzzle/guzzle": "~3.8"
     },
