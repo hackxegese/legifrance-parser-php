@@ -8,7 +8,9 @@ class Stream
 
     public function __construct()
     {
-        $this->client = new \Guzzle\Http\Client('http://www.legifrance.gouv.fr');
+        $this->client = new \GuzzleHttp\Client([
+            'base_url' => ['http://www.legifrance.gouv.fr']
+        ]);
     }
 
     public function get($page)

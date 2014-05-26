@@ -5,7 +5,7 @@
     "require": {
         "php": ">=5.4",
         "pixel418/markdownify": "~2.1",
-        "guzzle/guzzle": "~3.8"
+        "guzzlehttp/guzzle": "~4.0"
     },
     "require-dev": {
         "atoum/atoum": "~0.0.1@dev"
