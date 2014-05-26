@@ -11,9 +11,9 @@
         "atoum/atoum": "~0.0.1@dev"
     },
     "autoload": {
-        "psr-0": {
-            "Legifrance": "src/",
-            "Test": "tests/"
+        "psr-4": {
+            "Legifrance\\": "src/",
+            "Test\\Unit\\Legifrance\\": "tests/"
         }
     },
     "config": {

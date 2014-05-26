@@ -1,3 +1,3 @@
 <?php
 
-$runner->addTestsFromDirectory(__DIR__ . '/tests/Test/Unit');
+$runner->addTestsFromDirectory(__DIR__ . '/tests');
